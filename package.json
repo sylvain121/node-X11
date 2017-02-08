@@ -1,0 +1,30 @@
+{
+  "name": "node-x11",
+  "version": "1.0.0",
+  "description": "node native binding to interact with x11 screen, keyboard, mouse",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylvain121/node-X11.git"
+  },
+  "keywords": [
+    "node",
+    "X11",
+    "mouse",
+    "keyboard",
+    "screen"
+  ],
+  "author": "sylvain121",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sylvain121/node-X11/issues"
+  },
+  "homepage": "https://github.com/sylvain121/node-X11#readme",
+  "dependencies": {
+    "binding": "^3.0.1",
+    "nan": "^2.5.1"
+  }
+}
