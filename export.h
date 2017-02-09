@@ -1,7 +1,12 @@
+//TODO ugly
+static int MOUSE_LEFT = 1;
+static int MOUSE_MIDDLE = 2;
+static int MOUSE_RIGHT = 3;
 
-struct Image {
+
+typedef struct image {
 	int width;
 	int height;
-	const char * data;
+	char * data;
 	int depth;
-};
+} Image ;

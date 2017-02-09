@@ -31,12 +31,7 @@ extern "C" {
 	static XShmSegmentInfo __xshminfo;
 
 
-	//TODO ugly
-	static int MOUSE_LEFT = 1;
-	static int MOUSE_MIDDLE = 2;
-	static int MOUSE_RIGHT = 3;
-
-	int display_init(const char * displayname, int * desktopWidth, int * desktopHeight, int *desktopDepth) 
+int display_init(const char * displayname, int * desktopWidth, int * desktopHeight, int *desktopDepth) 
 	{
 		// init
 		int ignore = 0;
@@ -98,14 +93,18 @@ extern "C" {
 
 	}
 
-	void display_image( Image* image )
+	void display_image( Image *image )
 	{
 
-		if(XShmGetImage(display, rootWindow, image, 0, 0, XAllPlanes()) == 0) {
+		if(XShmGetImage(display, rootWindow, ximage, 0, 0, XAllPlanes()) == 0) {
 			// image->data RGBA
 			printf("FATAL: XShmGetImage failed.\n");
 			exit(-1);
 		}
+		image->width = ximage->width;
+		image->height = ximage->height;
+		image->data = ximage->data;
+		image->depth = ximage->depth;
 
 
 	}
