@@ -33,13 +33,15 @@ NAN_METHOD(getImage)
 {
 
 	display_image(image);
-	uint32_t bufferSize = image->width * image->height * image->depth;
+	uint32_t bufferSize = image->width * image->height * (image->bits_per_pixel / 8);
 	Local<Object> buffer = Nan::NewBuffer((char*) image->data, bufferSize, NULL, NULL).ToLocalChecked();
 
 	Local<Object> obj = Nan::New<Object>();
 	Nan::Set(obj, Nan::New("width").ToLocalChecked(), Nan::New<Number>(image->width));
 	Nan::Set(obj, Nan::New("height").ToLocalChecked(), Nan::New<Number>(image->height));
 	Nan::Set(obj, Nan::New("depth").ToLocalChecked(), Nan::New<Number>(image->depth));
+	Nan::Set(obj, Nan::New("bits_per_pixel").ToLocalChecked(), Nan::New<Number>(image->bits_per_pixel));
+	Nan::Set(obj, Nan::New("bytes_per_line").ToLocalChecked(), Nan::New<Number>(image->bytes_per_line));
 	Nan::Set(obj, Nan::New("data").ToLocalChecked(), buffer);
 
 	info.GetReturnValue().Set(obj);

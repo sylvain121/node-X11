@@ -105,7 +105,8 @@ int display_init(const char * displayname, int * desktopWidth, int * desktopHeig
 		image->height = ximage->height;
 		image->data = ximage->data;
 		image->depth = ximage->depth;
-
+		image->bits_per_pixel = ximage->bits_per_pixel;
+		image->bytes_per_line = ximage->bytes_per_line;
 
 	}
 

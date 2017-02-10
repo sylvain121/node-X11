@@ -9,4 +9,6 @@ typedef struct image {
 	int height;
 	char * data;
 	int depth;
+	int bytes_per_line;
+	int bits_per_pixel;
 } Image ;
