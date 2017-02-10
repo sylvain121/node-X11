@@ -1,6 +1,6 @@
 {
   "name": "node-x11",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "node native binding to interact with x11 screen, keyboard, mouse",
   "main": "index.js",
   "scripts": {
