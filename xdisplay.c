@@ -110,10 +110,10 @@ int display_init(const char * displayname, int * desktopWidth, int * desktopHeig
 
 	}
 
-	void display_keypress( int keycode, bool isDown )
+	void display_keypress( int keysym, bool isDown )
 	{
 
-		XTestFakeKeyEvent(display,keycode,isDown, CurrentTime);
+		XTestFakeKeyEvent(display,XKeysymToKeycode(display, keysym),isDown, CurrentTime);
 		XFlush(display);
 	}
 

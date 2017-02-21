@@ -1,5 +1,5 @@
 var x11 = require("../index.js");
-var keycode = "24" // A key 
+var keycode = 65 // A key 
 
 console.log("initialize");
 x11.init();
