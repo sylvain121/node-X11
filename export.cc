@@ -9,7 +9,6 @@ using namespace v8;
 using v8::FunctionTemplate;
 
 char * pDisplay = std::getenv("DISPLAY");
-Image *image = ( Image* )malloc(sizeof(Image));
 int width = 0;
 int height = 0;
 int depth = 0;
@@ -25,16 +24,17 @@ NAN_METHOD(init)
 
 	std::cout << "init on display " << pDisplay <<std::endl;
 	display_init(pDisplay, &width, &height, &depth);
-	image->data = (char*) malloc(sizeof(char)*width*height*depth);
 
 }
 
 NAN_METHOD(getImage)
 {
 
+	Image *image = ( Image* )malloc(sizeof(Image));
+	image->data = (char*) malloc(sizeof(char)*width*height*4);
 	display_image(image);
 	uint32_t bufferSize = image->width * image->height * (image->bits_per_pixel / 8);
-	Local<Object> buffer = Nan::NewBuffer((char*) image->data, bufferSize, NULL, NULL).ToLocalChecked();
+	Local<Object> buffer = Nan::NewBuffer((char*) image->data, bufferSize).ToLocalChecked();
 
 	Local<Object> obj = Nan::New<Object>();
 	Nan::Set(obj, Nan::New("width").ToLocalChecked(), Nan::New<Number>(image->width));
@@ -82,8 +82,8 @@ NAN_METHOD(mouseButton)
 	}
 	int button = info[0]->NumberValue();
 	if( button <1 || button > 3 )
-       	{
-		
+	{
+
 		return Nan::ThrowError(Nan::TypeError("Invalid button value"));
 	}
 	display_mouse_button( info[0]->NumberValue(), info[1]->BooleanValue());

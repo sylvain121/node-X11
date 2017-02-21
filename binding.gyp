@@ -6,12 +6,7 @@
                 "<!(node -e \"require('nan')\")"
 
             ],
-            "cflags": [
-                "-Wall",
-                "-O3"
-
-            ],
-            "link_settings": {
+           "link_settings": {
                 "libraries": [
                     "-lXtst",
                     "-lX11"
