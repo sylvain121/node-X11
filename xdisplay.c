@@ -109,8 +109,14 @@ int display_init(const char * displayname, int * desktopWidth, int * desktopHeig
 		image->bytes_per_line = ximage->bytes_per_line;
 
 	}
+	void display_keypress_with_keycode( int keycode, bool isDown )
+	{
 
-	void display_keypress( int keysym, bool isDown )
+		XTestFakeKeyEvent(display,keycode, isDown, CurrentTime);
+		XFlush(display);
+	}
+
+	void display_keypress_with_keysym( int keysym, bool isDown )
 	{
 
 		XTestFakeKeyEvent(display,XKeysymToKeycode(display, keysym),isDown, CurrentTime);

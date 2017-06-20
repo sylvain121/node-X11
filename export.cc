@@ -47,8 +47,7 @@ NAN_METHOD(getImage)
 	info.GetReturnValue().Set(obj);
 
 }
-
-NAN_METHOD(keyPress)
+NAN_METHOD(keyPressWithKeycode)
 {
 
 
@@ -58,7 +57,21 @@ NAN_METHOD(keyPress)
 	}
 
 
-	display_keypress(info[0]->NumberValue(),info[1]->BooleanValue());
+	display_keypress_with_keycode(info[0]->NumberValue(),info[1]->BooleanValue());
+
+}
+
+NAN_METHOD(keyPressWithKeysym)
+{
+
+
+	if(info.Length() < 2)
+	{
+		return Nan::ThrowError(Nan::TypeError("too few arguments"));
+	}
+
+
+	display_keypress_with_keysym(info[0]->NumberValue(),info[1]->BooleanValue());
 
 }
 
@@ -96,8 +109,10 @@ NAN_MODULE_INIT(Init)
 			Nan::GetFunction(Nan::New<FunctionTemplate>(init)).ToLocalChecked());
 	Nan::Set(target, Nan::New("getImage").ToLocalChecked(),
 			Nan::GetFunction(Nan::New<FunctionTemplate>(getImage)).ToLocalChecked());	
-	Nan::Set(target, Nan::New("keyPress").ToLocalChecked(),
-			Nan::GetFunction(Nan::New<FunctionTemplate>(keyPress)).ToLocalChecked());
+	Nan::Set(target, Nan::New("keyPressWithKeycode").ToLocalChecked(),
+			Nan::GetFunction(Nan::New<FunctionTemplate>(keyPressWithKeycode)).ToLocalChecked());
+	Nan::Set(target, Nan::New("keyPressWithKeysym").ToLocalChecked(),
+			Nan::GetFunction(Nan::New<FunctionTemplate>(keyPressWithKeysym)).ToLocalChecked());
 	Nan::Set(target, Nan::New("mouseMove").ToLocalChecked(),
 			Nan::GetFunction(Nan::New<FunctionTemplate>(mouseMove)).ToLocalChecked());
 	Nan::Set(target, Nan::New("mouseButton").ToLocalChecked(),
