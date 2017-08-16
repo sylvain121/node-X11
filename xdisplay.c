@@ -132,8 +132,11 @@ int display_init(const char * displayname, int * desktopWidth, int * desktopHeig
 
 	void display_mouse_button(int button, bool isDown ) {
 
+		XTestGrabControl(display, True);		
 		XTestFakeButtonEvent(display, button, isDown, CurrentTime);
-		XFlush(display);
+		Xsync(display, True);
+		XTestGrabControl(display, False);
+
 	}
 
 #ifdef __cplusplus
