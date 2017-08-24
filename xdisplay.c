@@ -134,7 +134,7 @@ int display_init(const char * displayname, int * desktopWidth, int * desktopHeig
 
 		XTestGrabControl(display, True);		
 		XTestFakeButtonEvent(display, button, isDown, CurrentTime);
-		Xsync(display, True);
+		XFlush(display);
 		XTestGrabControl(display, False);
 
 	}
