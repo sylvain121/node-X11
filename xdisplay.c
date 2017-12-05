@@ -112,7 +112,7 @@ extern "C" {
 	void display_keypress_with_keycode( int keycode, bool isDown )
 	{
 		XTestGrabControl(display, True);
-		XTestFakeKeyEvent(display,keycode, isDown, CurrentTime);
+		XTestFakeKeyEvent(display,keycode, isDown ? True : False, CurrentTime);
 		XSync(display, True);
 		XTestGrabControl(display, False);
 	}
@@ -137,7 +137,7 @@ extern "C" {
 	void display_mouse_button(int button, bool isDown ) {
 
 		XTestGrabControl(display, True);		
-		XTestFakeButtonEvent(display, button, isDown, CurrentTime);
+		XTestFakeButtonEvent(display, button, isDown ? True : False, CurrentTime);
 		XSync(display, True);
 		XTestGrabControl(display, False);
 
