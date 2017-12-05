@@ -31,7 +31,7 @@ extern "C" {
 	static XShmSegmentInfo __xshminfo;
 
 
-int display_init(const char * displayname, int * desktopWidth, int * desktopHeight, int *desktopDepth) 
+	int display_init(const char * displayname, int * desktopWidth, int * desktopHeight, int *desktopDepth) 
 	{
 		// init
 		int ignore = 0;
@@ -111,30 +111,34 @@ int display_init(const char * displayname, int * desktopWidth, int * desktopHeig
 	}
 	void display_keypress_with_keycode( int keycode, bool isDown )
 	{
-
+		XTestGrabControl(display, True);
 		XTestFakeKeyEvent(display,keycode, isDown, CurrentTime);
-		XFlush(display);
+		XSync(display, True);
+		XTestGrabControl(display, False);
 	}
 
 	void display_keypress_with_keysym( int keysym, bool isDown )
 	{
 
+		XTestGrabControl(display, True);
 		XTestFakeKeyEvent(display,XKeysymToKeycode(display, keysym),isDown, CurrentTime);
-		XFlush(display);
+		XSync(display, True);
+		XTestGrabControl(display, False);
 	}
 
 	void display_mouse_move( int x, int y )
 	{
-		XWarpPointer(display, None, DefaultRootWindow(display),
-				0, 0, 0, 0, x, y);
-		XFlush(display);
+		XTestGrabControl(display, True);
+		XTestFakeMotionEvent(display, screenNumber, x, y, CurrentTime);
+		XSync(display, True);
+		XTestGrabControl(display, False);
 	}
 
 	void display_mouse_button(int button, bool isDown ) {
 
 		XTestGrabControl(display, True);		
 		XTestFakeButtonEvent(display, button, isDown, CurrentTime);
-		XFlush(display);
+		XSync(display, True);
 		XTestGrabControl(display, False);
 
 	}
