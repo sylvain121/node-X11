@@ -143,6 +143,15 @@ extern "C" {
 
 	}
 
+	void close() 
+	{
+		if(display) {
+			XCloseDisplay(display);
+			display = NULL;
+
+		}
+	}
+
 #ifdef __cplusplus
 }
 #endif

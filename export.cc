@@ -102,6 +102,10 @@ NAN_METHOD(mouseButton)
 	display_mouse_button( info[0]->NumberValue(), info[1]->BooleanValue());
 
 }
+NAN_METHOD(close)
+{
+	close();
+}
 
 NAN_MODULE_INIT(Init) 
 {
@@ -117,6 +121,10 @@ NAN_MODULE_INIT(Init)
 			Nan::GetFunction(Nan::New<FunctionTemplate>(mouseMove)).ToLocalChecked());
 	Nan::Set(target, Nan::New("mouseButton").ToLocalChecked(),
 			Nan::GetFunction(Nan::New<FunctionTemplate>(mouseButton)).ToLocalChecked());
+	Nan::Set(target, Nan::New("close").ToLocalChecked(),
+			Nan::GetFunction(Nan::New<FunctionTemplate>(close)).ToLocalChecked());
+
+
 
 }
 
