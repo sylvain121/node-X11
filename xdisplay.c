@@ -132,7 +132,7 @@ extern "C" {
 
 	void display_mouse_move( int x, int y )
 	{
-		XLockDislay(display);
+		XLockDisplay(display);
 		XTestGrabControl(display, True);
 		XTestFakeMotionEvent(display, screenNumber, x, y, CurrentTime);
 		XFlush(display);
@@ -143,7 +143,7 @@ extern "C" {
 	void display_mouse_button(int button, bool isDown ) 
 	{
 
-		XLockDislay(display);
+		XLockDisplay(display);
 		XTestGrabControl(display, True);		
 		XTestFakeButtonEvent(display, button, isDown ? True : False, CurrentTime);
 		XFlush(display);
