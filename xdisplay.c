@@ -111,36 +111,44 @@ extern "C" {
 	}
 	void display_keypress_with_keycode( int keycode, bool isDown )
 	{
+		XLockDisplay(display);
 		XTestGrabControl(display, True);
 		XTestFakeKeyEvent(display,keycode, isDown ? True : False, CurrentTime);
-		XSync(display, True);
+		XFlush(display);
 		XTestGrabControl(display, False);
+		XUnlockDisplay(display);
 	}
 
 	void display_keypress_with_keysym( int keysym, bool isDown )
 	{
 
+		XLockDislay(display);
 		XTestGrabControl(display, True);
 		XTestFakeKeyEvent(display,XKeysymToKeycode(display, keysym),isDown, CurrentTime);
-		XSync(display, True);
+		XFlush(display);
 		XTestGrabControl(display, False);
+		XUnlockDisplay(display);
 	}
 
 	void display_mouse_move( int x, int y )
 	{
+		XLockDislay(display);
 		XTestGrabControl(display, True);
 		XTestFakeMotionEvent(display, screenNumber, x, y, CurrentTime);
-		XSync(display, True);
+		XFlush(display);
 		XTestGrabControl(display, False);
+		XUnlockDisplay(display);
 	}
 
-	void display_mouse_button(int button, bool isDown ) {
+	void display_mouse_button(int button, bool isDown ) 
+	{
 
+		XLockDislay(display);
 		XTestGrabControl(display, True);		
 		XTestFakeButtonEvent(display, button, isDown ? True : False, CurrentTime);
-		XSync(display, True);
+		XFlush(display);
 		XTestGrabControl(display, False);
-
+		XUnlockDisplay(display);
 	}
 
 	void close() 
