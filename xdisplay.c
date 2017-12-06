@@ -122,7 +122,7 @@ extern "C" {
 	void display_keypress_with_keysym( int keysym, bool isDown )
 	{
 
-		XLockDislay(display);
+		XLockDisplay(display);
 		XTestGrabControl(display, True);
 		XTestFakeKeyEvent(display,XKeysymToKeycode(display, keysym),isDown, CurrentTime);
 		XFlush(display);
