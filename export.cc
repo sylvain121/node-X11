@@ -1,7 +1,6 @@
 #include <nan.h>
 #include <iostream>
 #include <cstdlib>
-#include "export.h"
 #include "xdisplay.h"
 
 using namespace v8;
@@ -30,9 +29,14 @@ NAN_METHOD(init)
 NAN_METHOD(getImage)
 {
 
+	bool withPointer = false;
+	if(info.Length() == 1 && info[0]->IsBoolean())
+	{
+		withPointer = info[0]->BooleanValue();
+	}
 	Image *image = ( Image* )malloc(sizeof(Image));
 	image->data = (char*) malloc(sizeof(char)*width*height*4);
-	display_image(image);
+	display_image(image, withPointer);
 	uint32_t bufferSize = image->width * image->height * (image->bits_per_pixel / 8);
 	Local<Object> buffer = Nan::NewBuffer((char*) image->data, bufferSize).ToLocalChecked();
 

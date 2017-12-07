@@ -19,7 +19,7 @@ var x11 = require("node_X11");
 
 x11.init() // connect on current user screen see $DISPLAY in shell
 
-var screenshot = x11.getImage();
+var screenshot = x11.getImage(Bool : WithPointer);
 
 console.log(screenshot.width); // image width ->Number;
 console.log(screenshot.height); // image height -> Number;
@@ -27,6 +27,7 @@ console.log(screenshot.depth); // image depth -> Number;
 console.log(screenshot.data); // image raw pixel -> Buffer;
 
  ```
+Set Pointer display with " withpointer";
 
 ### `keyPress(Number: keycode, Boolean: isDown)`
 

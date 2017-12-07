@@ -1,6 +1,6 @@
 var x11 = require("../index.js");
 //var keycode = 65; // A key 
-var keycode = 58;
+var keycode = 33;
 console.log("initialize");
 x11.init();
 console.log("trying to send keycode");

@@ -2,24 +2,7 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
-#include "export.h"
-#include <stdbool.h>
-	//X11GRAB IMPORT
-
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <sys/ipc.h>
-#include <X11/X.h>
-#include <X11/Xlibint.h>
-#include <X11/Xproto.h>
-#include <X11/Xutil.h>
-#include <sys/shm.h>
-#include <X11/extensions/shape.h>
-#include <X11/extensions/XShm.h>
-#include <X11/extensions/Xfixes.h>
-
-#include <X11/extensions/XTest.h>
+#include "xdisplay.h"
 
 	//X11GRAB vars
 	static int screenNumber;
@@ -93,7 +76,7 @@ extern "C" {
 
 	}
 
-	void display_image( Image *image )
+	void display_image( Image *image, bool withPointer )
 	{
 
 		if(XShmGetImage(display, rootWindow, ximage, 0, 0, XAllPlanes()) == 0) {
@@ -107,6 +90,10 @@ extern "C" {
 		image->depth = ximage->depth;
 		image->bits_per_pixel = ximage->bits_per_pixel;
 		image->bytes_per_line = ximage->bytes_per_line;
+		if(withPointer)
+		{
+			paint_mouse_pointer(image);
+		}
 
 	}
 	void display_keypress_with_keycode( int keycode, bool isDown )
@@ -151,6 +138,57 @@ extern "C" {
 		XUnlockDisplay(display);
 	}
 
+	/**
+	 * from x11grab.c in ffmpeg project
+	 */
+
+	void paint_mouse_pointer(Image *image)
+	{
+		int x_off = 0;
+		int y_off = 0;
+		XFixesCursorImage *xcim;
+		int width = image->width;
+		int height = image->height;
+		int x, y;
+		int line, column;
+		int to_line, to_column;
+		int pixstride = image->bits_per_pixel >> 3;
+		/* Warning: in its insanity, xlib provides unsigned image data through a
+		 * char* pointer, so we have to make it uint8_t to make things not break.
+		 * Anyone who performs further investigation of the xlib API likely risks
+		 * permanent brain damage. */
+		uint8_t *pix = image->data;
+		/* Code doesn't currently support 16-bit or PAL8 */
+		if (image->bits_per_pixel != 24 && image->bits_per_pixel != 32)
+			return;
+		xcim = XFixesGetCursorImage(display);
+		x = xcim->x - xcim->xhot;
+		y = xcim->y - xcim->yhot;
+		to_line = FFMIN((y + xcim->height), (height + y_off));
+		to_column = FFMIN((x + xcim->width), (width + x_off));
+		for (line = FFMAX(y, y_off); line < to_line; line++) {
+			for (column = FFMAX(x, x_off); column < to_column; column++) {
+				int  xcim_addr = (line - y) * xcim->width + column - x;
+				int image_addr = ((line - y_off) * width + column - x_off) * pixstride;
+				int r = (uint8_t)(xcim->pixels[xcim_addr] >>  0);
+				int g = (uint8_t)(xcim->pixels[xcim_addr] >>  8);
+				int b = (uint8_t)(xcim->pixels[xcim_addr] >> 16);
+				int a = (uint8_t)(xcim->pixels[xcim_addr] >> 24);
+				if (a == 255) {
+					pix[image_addr+0] = r;
+					pix[image_addr+1] = g;
+					pix[image_addr+2] = b;
+				} else if (a) {
+					/* pixel values from XFixesGetCursorImage come premultiplied by alpha */
+					pix[image_addr+0] = r + (pix[image_addr+0]*(255-a) + 255/2) / 255;
+					pix[image_addr+1] = g + (pix[image_addr+1]*(255-a) + 255/2) / 255;
+					pix[image_addr+2] = b + (pix[image_addr+2]*(255-a) + 255/2) / 255;
+				}
+			}
+		}
+		XFree(xcim);
+		xcim = NULL;
+	}
 	void close() 
 	{
 		if(display) {
