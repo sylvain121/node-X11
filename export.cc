@@ -12,6 +12,56 @@ int width = 0;
 int height = 0;
 int depth = 0;
 
+class GetImageWorker : public Nan::AsyncWorker {
+	public:
+		bool withPointer;
+		Image *image;
+
+		GetImageWorker(bool withpointer, Nan::Callback* callback) 
+		: Nan::AsyncWorker(callback) {
+			this->withPointer = withpointer;
+		}
+		
+		void Execute() {
+			image = ( Image* )malloc(sizeof(Image));
+			image->data = (char*) malloc(sizeof(char)*width*height*4);
+			display_image(image, withPointer);
+
+		}
+		
+		void HandleOKCallback() {
+			Nan::HandleScope scope;
+			uint32_t bufferSize = image->width * image->height * (image->bits_per_pixel / 8);
+			Local<Object> buffer = Nan::NewBuffer((char*) image->data, bufferSize).ToLocalChecked();
+			Local<Object> obj = Nan::New<Object>();
+			Nan::Set(obj, Nan::New("width").ToLocalChecked(), Nan::New<Number>(image->width));
+			Nan::Set(obj, Nan::New("height").ToLocalChecked(), Nan::New<Number>(image->height));
+			Nan::Set(obj, Nan::New("depth").ToLocalChecked(), Nan::New<Number>(image->depth));
+			Nan::Set(obj, Nan::New("bits_per_pixel").ToLocalChecked(), Nan::New<Number>(image->bits_per_pixel));
+			Nan::Set(obj, Nan::New("bytes_per_line").ToLocalChecked(), Nan::New<Number>(image->bytes_per_line));
+			Nan::Set(obj, Nan::New("data").ToLocalChecked(), buffer);
+
+			v8::Local<v8::Value> argv[] = {
+				Nan::Null(), // no error occured
+				obj 
+
+			};
+			callback->Call(2, argv);
+
+		}
+
+		void HandleErrorCallback() {
+			Nan::HandleScope scope;
+			v8::Local<v8::Value> argv[] = {
+				Nan::New(this->ErrorMessage()).ToLocalChecked(), // return error message
+				Nan::Null()
+
+			};
+			callback->Call(2, argv);
+
+		}
+};
+
 NAN_METHOD(init)
 {
 
@@ -26,7 +76,22 @@ NAN_METHOD(init)
 
 }
 
-NAN_METHOD(getImage)
+NAN_METHOD(getImage) 
+{
+	bool withPointer = false;
+	if(info.Length() == 1 && info[0]->IsBoolean())
+	{
+		withPointer = info[0]->BooleanValue();
+	}
+
+	Nan::AsyncQueueWorker(new GetImageWorker(
+				withPointer,
+				new Nan::Callback(info[1].As<v8::Function>()
+					)));
+}
+
+
+NAN_METHOD(getImageSync)
 {
 
 	bool withPointer = false;
@@ -117,6 +182,8 @@ NAN_MODULE_INIT(Init)
 			Nan::GetFunction(Nan::New<FunctionTemplate>(init)).ToLocalChecked());
 	Nan::Set(target, Nan::New("getImage").ToLocalChecked(),
 			Nan::GetFunction(Nan::New<FunctionTemplate>(getImage)).ToLocalChecked());	
+	Nan::Set(target, Nan::New("getImageSync").ToLocalChecked(),
+			Nan::GetFunction(Nan::New<FunctionTemplate>(getImageSync)).ToLocalChecked());	
 	Nan::Set(target, Nan::New("keyPressWithKeycode").ToLocalChecked(),
 			Nan::GetFunction(Nan::New<FunctionTemplate>(keyPressWithKeycode)).ToLocalChecked());
 	Nan::Set(target, Nan::New("keyPressWithKeysym").ToLocalChecked(),

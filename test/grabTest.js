@@ -7,7 +7,7 @@ grab.init();
 console.log("trying to get frame");
 
 var date = new Date();
-var screenshot = grab.getImage();
+var screenshot = grab.getImageSync();
 console.log(screenshot);
 
 console.log(new Date() - date);
