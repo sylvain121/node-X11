@@ -1,8 +1,9 @@
 {
   "name": "node-x11",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "node native binding to interact with x11 screen, keyboard, mouse",
-  "main": "index.js",
+  "main": "src/js/index.js",
+  "types": "src/js/@types/node-x11/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
