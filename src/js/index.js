@@ -1,1 +1,1 @@
-module.exports = require('bindings')("node_X11");
+module.exports = require('bindings')("node_x11");
