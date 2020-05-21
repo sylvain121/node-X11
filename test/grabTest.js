@@ -9,7 +9,8 @@ setInterval(function(){
     var date = new Date();
     var screenshot = grab.getImageSync();
     console.log(screenshot);
-
+    delete screenshot;
     console.log(new Date() - date);
+    console.log('mem : ', process.memoryUsage());
 }, 30)
 

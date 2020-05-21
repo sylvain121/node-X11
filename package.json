@@ -26,6 +26,7 @@
   "homepage": "https://github.com/sylvain121/node-X11#readme",
   "dependencies": {
     "bindings": "^1.2.1",
+    "install": "^0.13.0",
     "nan": "^2.5.1"
   }
 }

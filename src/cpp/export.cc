@@ -103,7 +103,7 @@ NAN_METHOD(getImageSync)
 	image->data = (char*) malloc(sizeof(char)*width*height*4);
 	display_image(image, withPointer);
 	uint32_t bufferSize = image->width * image->height * (image->bits_per_pixel / 8);
-	Local<Object> buffer = Nan::NewBuffer((char*) image->data, bufferSize).ToLocalChecked();
+	Local<Object> buffer = Nan::CopyBuffer((char*) image->data, bufferSize).ToLocalChecked();
 
 	Local<Object> obj = Nan::New<Object>();
 	Nan::Set(obj, Nan::New("width").ToLocalChecked(), Nan::New<Number>(image->width));
@@ -112,6 +112,9 @@ NAN_METHOD(getImageSync)
 	Nan::Set(obj, Nan::New("bits_per_pixel").ToLocalChecked(), Nan::New<Number>(image->bits_per_pixel));
 	Nan::Set(obj, Nan::New("bytes_per_line").ToLocalChecked(), Nan::New<Number>(image->bytes_per_line));
 	Nan::Set(obj, Nan::New("data").ToLocalChecked(), buffer);
+
+    free(image->data);
+    free(image);
 
 	info.GetReturnValue().Set(obj);
 
