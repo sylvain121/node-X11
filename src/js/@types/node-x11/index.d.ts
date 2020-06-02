@@ -14,7 +14,7 @@ declare module 'node-x11' {
         readonly data: Buffer;
     }
 
-    export function init(display?: string);
+    export function init(display?: string): {width: number, height: number, depth: number};
 
     export function getImageSync(withPointer?: boolean): XImage;
 

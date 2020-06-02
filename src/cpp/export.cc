@@ -74,6 +74,11 @@ NAN_METHOD(init)
 	std::cout << "init on display " << pDisplay <<std::endl;
 	display_init(pDisplay, &width, &height, &depth);
 
+    Local<Object> obj = Nan::New<Object>();
+	Nan::Set(obj, Nan::New("width").ToLocalChecked(), Nan::New<Number>(width));
+	Nan::Set(obj, Nan::New("height").ToLocalChecked(), Nan::New<Number>(height));
+	Nan::Set(obj, Nan::New("depth").ToLocalChecked(), Nan::New<Number>(depth));
+	info.GetReturnValue().Set(obj);
 }
 
 NAN_METHOD(getImage) 
