@@ -16,9 +16,9 @@ declare module 'node-x11' {
 
     export function init(display?: string): { width: number, height: number, depth: number };
 
-    export function getImageSync(xoffset?: number, yoffset?: number): XImage;
+    export function getImageSync(xoffset?: number, yoffset?: number, width?: number, height?: number): XImage;
 
-    export function getImage(xoffset?:number, yoffset?: number, callback?: Function);
+    export function getImage(xoffset?:number, yoffset?: number, width?: number, height?: number, callback?: Function);
 
     export function keyPressWithKeycode(keyCode: number, isDown: boolean);
 

@@ -122,7 +122,7 @@ NAN_METHOD(getImage)
 
 	Nan::AsyncQueueWorker(new GetImageWorker(
 		xoffset, yoffset, offsetWidth, offsetHeight,
-		new Nan::Callback(info[3].As<v8::Function>())));
+		new Nan::Callback(info[4].As<v8::Function>())));
 }
 
 NAN_METHOD(getImageSync)
