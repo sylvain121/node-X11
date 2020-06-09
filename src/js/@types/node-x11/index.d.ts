@@ -2,7 +2,7 @@ declare module 'node-x11' {
     enum MOUSE_BUTTON {
         LEFT = 1,
         MIDDLE = 2,
-        RIGHT= 3
+        RIGHT = 3
     }
 
     export class XImage {
@@ -14,11 +14,11 @@ declare module 'node-x11' {
         readonly data: Buffer;
     }
 
-    export function init(display?: string): {width: number, height: number, depth: number};
+    export function init(display?: string): { width: number, height: number, depth: number };
 
-    export function getImageSync(withPointer?: boolean): XImage;
+    export function getImageSync(xoffset?: number, yoffset?: number): XImage;
 
-    export function getImage(withPointer?: boolean, callback?: Function);
+    export function getImage(xoffset?:number, yoffset?: number, callback?: Function);
 
     export function keyPressWithKeycode(keyCode: number, isDown: boolean);
 

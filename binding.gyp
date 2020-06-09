@@ -13,7 +13,8 @@
         "libraries": [
           "-lXtst",
           "-lX11",
-          "-lXfixes"
+          "-lXfixes",
+          "-lXrandr"
         ]
       }
     }
