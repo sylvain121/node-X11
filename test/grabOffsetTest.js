@@ -1,4 +1,5 @@
 var fs = require('fs');
+var jpeg = require('jpeg-js');
 
 var grab = require('../src/js/index');
 console.log("init x11 interface");
@@ -9,9 +10,19 @@ console.log("trying to get frame");
 var date = new Date();
 var screenshot = grab.getImageSync();
 console.log(screenshot);
+fs.writeFileSync('./test.jpg', jpeg.encode({
+    width: screenshot.width,
+    height: screenshot.height,
+    data: screenshot.data
+}).data)
 console.log(screenshot.data.length);
 console.log(new Date() - date);
 var screenshot = grab.getImageSync(800, 600, 800, 600);
+fs.writeFileSync('./test1.jpg', jpeg.encode({
+    width: screenshot.width,
+    height: screenshot.height,
+    data: screenshot.data
+}).data);
 console.log(screenshot);
 console.log(screenshot.data.length);
 console.log(new Date() - date);

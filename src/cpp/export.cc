@@ -264,6 +264,24 @@ NAN_METHOD(set_screen_resolution)
 	set_current_screen_resolution(resolution_id);
 }
 
+NAN_METHOD(getMouseCursorSync)
+{
+	XFixesCursorImage *cursor = get_mouse_pointer();
+
+	uint32_t bufferSize = cursor->width * cursor->height * 4 * 4;
+	Local<Object> obj = Nan::New<Object>();
+	Local<Object> buffer = Nan::NewBuffer((char *)cursor->pixels, bufferSize).ToLocalChecked();
+	Nan::Set(obj, Nan::New("x").ToLocalChecked(), Nan::New<Number>(cursor->x));
+	Nan::Set(obj, Nan::New("y").ToLocalChecked(), Nan::New<Number>(cursor->y));
+	Nan::Set(obj, Nan::New("xhot").ToLocalChecked(), Nan::New<Number>(cursor->xhot));
+	Nan::Set(obj, Nan::New("yhot").ToLocalChecked(), Nan::New<Number>(cursor->yhot));
+	Nan::Set(obj, Nan::New("cursorSerial").ToLocalChecked(), Nan::New<Number>(cursor->cursor_serial));
+	Nan::Set(obj, Nan::New("width").ToLocalChecked(), Nan::New<Number>(cursor->width));
+	Nan::Set(obj, Nan::New("height").ToLocalChecked(), Nan::New<Number>(cursor->height));
+	Nan::Set(obj, Nan::New("data").ToLocalChecked(), buffer);
+	info.GetReturnValue().Set(obj);
+}
+
 NAN_MODULE_INIT(Init)
 {
 	Nan::Set(target, Nan::New("setResolution").ToLocalChecked(),
@@ -286,6 +304,8 @@ NAN_MODULE_INIT(Init)
 			 Nan::GetFunction(Nan::New<FunctionTemplate>(mouseMove)).ToLocalChecked());
 	Nan::Set(target, Nan::New("mouseButton").ToLocalChecked(),
 			 Nan::GetFunction(Nan::New<FunctionTemplate>(mouseButton)).ToLocalChecked());
+	Nan::Set(target, Nan::New("getMouseCursorSync").ToLocalChecked(),
+			 Nan::GetFunction(Nan::New<FunctionTemplate>(getMouseCursorSync)).ToLocalChecked());
 	Nan::Set(target, Nan::New("close").ToLocalChecked(),
 			 Nan::GetFunction(Nan::New<FunctionTemplate>(close)).ToLocalChecked());
 }

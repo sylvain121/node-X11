@@ -1,3 +1,5 @@
+#include <X11/extensions/Xfixes.h>
+
 //TODO ugly
 static int MOUSE_LEFT = 1;
 static int MOUSE_MIDDLE = 2;
