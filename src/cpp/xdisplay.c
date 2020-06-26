@@ -21,6 +21,7 @@ extern "C"
 	{
 		// init
 		int ignore = 0;
+		XInitThreads();
 		bzero(&__xshminfo, sizeof(__xshminfo));
 
 		// open display
@@ -93,6 +94,7 @@ extern "C"
 
 	void display_image(Image *image, int xoffset, int yoffset, int width, int height)
 	{
+		XLockDisplay(display);
 		if (xoffset > 0 || yoffset > 0 || width > 0 || height > 0)
 		{
 
@@ -107,6 +109,8 @@ extern "C"
 				exit(-1);
 			}
 		}
+
+		XUnlockDisplay(display);
 
 		image->width = ximage->width;
 		image->height = ximage->height;
