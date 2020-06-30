@@ -13,7 +13,7 @@ declare module 'node-x11' {
         readonly bytes_per_line: number;
         readonly data: Buffer;
     }
-    type GetImageCallback = (err: Error, image: Ximage) => void;
+    type GetImageCallback = (err: Error, image: XImage) => void;
     export function init(display?: string): { width: number, height: number, depth: number };
 
     export function getImageSync(xoffset?: number, yoffset?: number, width?: number, height?: number): XImage;
