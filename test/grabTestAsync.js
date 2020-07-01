@@ -7,7 +7,7 @@ console.log("trying to get frame");
 
 setInterval(function() {
 	var date = new Date();
-	grab.getImage(false, function(err, image){
+	grab.getImage(undefined, undefined, undefined, undefined, function(err, image){
 		console.log(image);
 		console.log("data size "+ image.data.length);
 		console.log(new Date() - date);
