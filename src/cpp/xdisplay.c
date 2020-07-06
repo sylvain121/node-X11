@@ -171,7 +171,11 @@ extern "C"
 
 	XFixesCursorImage* get_mouse_pointer()
 	{
-		return XFixesGetCursorImage(display);
+		
+		XLockDisplay(display);
+		XFixesCursorImage* cursor = XFixesGetCursorImage(display);
+		XUnlockDisplay(display);
+		return cursor;
 	}
 
 	void get_current_screen_resolution(int *width, int *height)

@@ -271,7 +271,7 @@ NAN_METHOD(getMouseCursorSync)
 
 	uint32_t bufferSize = cursor->width * cursor->height * 4 * 4;
 	Local<Object> obj = Nan::New<Object>();
-	Local<Object> buffer = Nan::NewBuffer((char *)cursor->pixels, bufferSize).ToLocalChecked();
+	Local<Object> buffer = Nan::CopyBuffer((char *)cursor->pixels, bufferSize).ToLocalChecked();
 	Nan::Set(obj, Nan::New("x").ToLocalChecked(), Nan::New<Number>(cursor->x));
 	Nan::Set(obj, Nan::New("y").ToLocalChecked(), Nan::New<Number>(cursor->y));
 	Nan::Set(obj, Nan::New("xhot").ToLocalChecked(), Nan::New<Number>(cursor->xhot));

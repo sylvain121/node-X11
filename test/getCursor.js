@@ -35,3 +35,7 @@ function printRGBA(data, width, height) {
 
 console.log("width", screenshot.width, "height",screenshot.height);
 
+setInterval(()=> {
+    grab.getImageSync();
+    console.log(grab.getMouseCursorSync());
+}, 30)
