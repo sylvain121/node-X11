@@ -268,10 +268,24 @@ NAN_METHOD(set_screen_resolution)
 NAN_METHOD(getMouseCursorSync)
 {
 	XFixesCursorImage *cursor = get_mouse_pointer();
+	/**
+	 * converting because on 64bit system long = 64bit 
+	 *  64 => 32bit RGBA
+	 */
+	int x, y;
+	uint32_t *pixel32 = (uint32_t*) malloc(cursor->width * cursor->height * sizeof(uint32_t));
+	for (y = 0; y < cursor->height; y++)
+	{
+		for (x = 0; x < cursor->width; x++)
+		{
+			uint32_t ofs = x + y * cursor->width;
+			*(pixel32 + ofs) = *(cursor->pixels + ofs);
+		}
+	}
 
-	uint32_t bufferSize = cursor->width * cursor->height * 4 * 4;
+	uint32_t bufferSize = cursor->width * cursor->height * 4;
 	Local<Object> obj = Nan::New<Object>();
-	Local<Object> buffer = Nan::CopyBuffer((char *)cursor->pixels, bufferSize).ToLocalChecked();
+	Local<Object> buffer = Nan::CopyBuffer((char *)pixel32, bufferSize).ToLocalChecked();
 	Nan::Set(obj, Nan::New("x").ToLocalChecked(), Nan::New<Number>(cursor->x));
 	Nan::Set(obj, Nan::New("y").ToLocalChecked(), Nan::New<Number>(cursor->y));
 	Nan::Set(obj, Nan::New("xhot").ToLocalChecked(), Nan::New<Number>(cursor->xhot));
