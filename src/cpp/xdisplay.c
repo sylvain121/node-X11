@@ -120,7 +120,7 @@ extern "C"
 		image->bytes_per_line = ximage->bytes_per_line;
 		if (xoffset > 0 || yoffset > 0 || width > 0 || height > 0)
 		{
-			Xfree(ximage);
+			XDestroyImage(ximage);
 		}
 	}
 	void display_keypress_with_keycode(int keycode, bool isDown)

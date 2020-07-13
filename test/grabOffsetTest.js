@@ -17,13 +17,16 @@ fs.writeFileSync('./test.jpg', jpeg.encode({
 }).data)
 console.log(screenshot.data.length);
 console.log(new Date() - date);
-var screenshot = grab.getImageSync(600, 10, 800, 600);
-fs.writeFileSync('./test1.jpg', jpeg.encode({
+setInterval(() => {
+
+var screenshot = grab.getImageSync(1920, 0, 1920, 1080);
+}, 15);
+/*fs.writeFileSync('./test1.jpg', jpeg.encode({
     width: screenshot.width,
     height: screenshot.height,
     data: screenshot.data
 }).data);
 console.log(screenshot);
 console.log(screenshot.data.length);
-console.log(new Date() - date);
+console.log(new Date() - date);*/
 
