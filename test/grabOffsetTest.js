@@ -17,7 +17,7 @@ fs.writeFileSync('./test.jpg', jpeg.encode({
 }).data)
 console.log(screenshot.data.length);
 console.log(new Date() - date);
-var screenshot = grab.getImageSync(800, 600, 800, 600);
+var screenshot = grab.getImageSync(600, 10, 800, 600);
 fs.writeFileSync('./test1.jpg', jpeg.encode({
     width: screenshot.width,
     height: screenshot.height,

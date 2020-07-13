@@ -118,10 +118,10 @@ extern "C"
 		image->depth = ximage->depth;
 		image->bits_per_pixel = ximage->bits_per_pixel;
 		image->bytes_per_line = ximage->bytes_per_line;
-		/*if (withPointer)
+		if (xoffset > 0 || yoffset > 0 || width > 0 || height > 0)
 		{
-			paint_mouse_pointer(image);
-		}*/
+			Xfree(ximage);
+		}
 	}
 	void display_keypress_with_keycode(int keycode, bool isDown)
 	{
@@ -169,11 +169,11 @@ extern "C"
 	 * from x11grab.c in ffmpeg project
 	 */
 
-	XFixesCursorImage* get_mouse_pointer()
+	XFixesCursorImage *get_mouse_pointer()
 	{
-		
+
 		XLockDisplay(display);
-		XFixesCursorImage* cursor = XFixesGetCursorImage(display);
+		XFixesCursorImage *cursor = XFixesGetCursorImage(display);
 		XUnlockDisplay(display);
 		return cursor;
 	}
